@@ -1,0 +1,52 @@
+<h1 *ngIf="authenticationService.userData | async">
+  Hello {{ (authenticationService.userData | async)?.email }}
+</h1>
+
+<form [formGroup]="userForm" (ngSubmit)="signIn()" novalidate>
+  <div class="row">
+    <div class="col-md-12">
+      <label>Username</label>
+      <input
+        type="text"
+        class="form-control"
+        required
+        formControlName="email"
+      />
+      <p *ngIf="userForm.controls.email.errors?.pattern" class="error">
+        <sup>*</sup>Please enter correct email
+      </p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <label>Password</label>
+      <input
+        type="password"
+        class="form-control"
+        required
+        formControlName="password"
+      />
+      <p *ngIf="userForm.controls.password.touched && userForm.controls.password.invalid" class="error">
+        <sup>*</sup>Please enter valida password
+      </p>
+    </div>
+  </div>
+
+  <button type="button" class="btn btn-primary mr-2" [disabled]="!userForm.valid" (click)="signUp()">
+    Sign Up
+  </button>
+
+  <button
+    type="button"
+    class="btn btn-success"
+    [disabled]="!userForm.valid"
+    (click)="signIn()"
+  >
+    Login
+  </button>
+</form>
+
+<button (click)="signOut()" class="btn btn-danger" *ngIf="authenticationService.userData | async">
+  Logout
+</button>

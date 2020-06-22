@@ -1,0 +1,57 @@
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h1 class="h2">Sellers List</h1>
+  <!-- It won't show if there is no seller data -->
+  <a routerLink="/register-seller" class="btn btn-success" *ngIf="hideWhenNoSeller">
+    <i class="fas fa-plus custom-fa-plus"></i>
+    Add Seller
+  </a>
+</div>
+
+<div class="pricing-header mx-auto">
+
+  <!-- Preloader shows before the data loads-->
+  <div class="no-data text-center" *ngIf="preLoader">
+    <img src="assets/preloader.gif" class="preloader-icon" alt="No seller">
+  </div>
+
+  <!-- No data shows when their is no seller data available -->
+  <div class="no-data text-center" *ngIf="noData">
+    <img src="assets/no-seller.svg" class="nodata-msg" alt="No seller">
+    <p class="nodata-msg">No seller added yet!</p>
+    <a routerLink="/register-seller" class="btn btn-success">
+      <i class="fas fa-plus custom-fa-plus"></i>
+      Add Seller
+    </a>
+  </div>
+
+  <!-- Showing sellers data -->
+  <div class="table-responsive" *ngIf="hideWhenNoSeller">
+    <table class="table table-bordered table-responsive-sm table-responsive-md table-responsive-lg">
+      <thead>
+        <tr>
+          <!-- <th scope="col">Seller Id</th> -->
+          <th scope="col">Seller name</th>
+          <th scope="col">Mobile number</th>
+          <!-- <th scope="col">Created On</th> -->
+          <th class="text-center" scope="col">Edit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- *ngFor loop iterates over Seller array and fetch the seller's data -->
+        <!-- paginate pipe will add pagination in seller's list, it won't show if items are less then 7 -->
+        <tr *ngFor="let seller of Seller | paginate: { itemsPerPage: 7, currentPage: p }; let i = index;">
+          <!-- <th scope="row">{{seller.$key}}</th> -->
+          <td>{{seller.name}}</td>
+          <td>{{seller.mobileNumber}}</td>
+          <!-- <td>{{seller.cratedOn}}</td> -->
+          <td class="text-center action-block">
+            <i class="far fa-edit" routerLink="/edit-seller/{{seller.$key}}"></i>
+            <i class="far fa-trash-alt" (click)="deleteSeller(seller)"></i></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <!-- Pagination -->
+  <pagination-controls (pageChange)="p = $event" autoHide="true" responsive="true"></pagination-controls>
+
+</div>
