@@ -28,6 +28,7 @@ export class AddSellerComponent implements OnInit {
   ngOnInit() {
     this.crudApi.getItemsList("seller"); // Call GetSellersList() before main form is being called
     this.framsellerForm(); // Call seller form when component is ready
+    this.addProduct()
   }
 
   // Reactive seller form
@@ -57,7 +58,7 @@ export class AddSellerComponent implements OnInit {
       productName: ["", [Validators.required, Validators.minLength(2)]],
       category: [""],
       quantity: ["", [Validators.required, Validators.pattern("^[0-9]+$")]],
-      balance: ["", [Validators.required, Validators.pattern("^[0-9]+$")]],
+      // balance: ["", [Validators.required, Validators.pattern("^[0-9]+$")]],
       sellingPrice: ["", [Validators.required, Validators.pattern("^[0-9]+$")]],
       buyingPrice: ["", [Validators.required, Validators.pattern("^[0-9]+$")]],
     });
@@ -81,11 +82,12 @@ export class AddSellerComponent implements OnInit {
     console.log(record);
     let prdAry = [];
     products.forEach(
-      async (prd) =>
+      async (prd) =>{
+        prd.balance = prd.quantity;
         await prdAry.push(
           this.store.collection('seller').doc(record.id).collection("products").add(prd)
         )
-    );
+    });
     this.toastr.success(
       this.sellerForm.controls["name"].value + " successfully added!"
     ); // Show success message when data is successfully submited

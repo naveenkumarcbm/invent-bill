@@ -12,257 +12,261 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-lg-12">
-    <div class="pricing-header form-block mx-auto">
-      <!-- Seller's Edit Form -->
-      <form [formGroup]="editForm" (ngSubmit)="updateForm()" novalidate>
-        <div class="row">
-          <div class="col-lg-5 col-md-12 col-sm-12">
-            <div class="row">
-              <div class="col-md-12 mb-3">
-                <label>Seller name</label>
-                <input
-                  type="text"
-                  formControlName="name"
-                  class="form-control"
-                  required
-                />
-                <p *ngIf="name.touched && name.invalid" class="error">
-                  <sup>*</sup>Please enter name
-                </p>
-                <p *ngIf="name.errors?.minlength" class="error">
-                  <sup>*</sup>Name shouldn't be less than 2 words
-                </p>
-              </div>
+<!-- Preloader shows before the data loads-->
+<div class="no-data text-center" *ngIf="preLoader">
+  <img src="assets/preloader.gif" class="preloader-icon" alt="No seller" />
+</div>
 
-              <div class="col-md-12 mb-3">
-                <label>Mobile number</label>
-                <input
-                  type="text"
-                  formControlName="mobileNumber"
-                  class="form-control"
-                  required
-                />
-                <p
-                  *ngIf="mobileNumber.touched && mobileNumber.invalid"
-                  class="error"
-                >
-                  <sup>*</sup>Please provide contact number
-                </p>
-                <p *ngIf="mobileNumber.errors?.pattern" class="error">
-                  <sup>*</sup>Use numbers only number
-                </p>
-              </div>
-            </div>
+<!-- Seller's Edit Form -->
+<form
+  class="flex-col justify-content-around"
+  [formGroup]="editForm"
+  novalidate
+  *ngIf="!preLoader"
+>
+  <div class="grid-2-col">
+    <div>
+      <label>Name</label>
+      <input type="text" formControlName="name" class="form-control" required />
+      <p *ngIf="name.touched && name.invalid" class="error">
+        <sup>*</sup>Please enter name
+      </p>
+      <p *ngIf="name.errors?.minlength" class="error">
+        <sup>*</sup>Name shouldn't be less than 2 words
+      </p>
+    </div>
 
-            <div class="row">
-              <div formArrayName="products">
-                <div
-                  *ngFor="let product of productsForms.controls; let i = index"
-                  [formGroupName]="i"
-                >
-                  <div class="col-md-12 mb-3">
-                    <label>Product Name</label>
-                    <input
-                      type="text"
-                      formControlName="productName"
-                      class="form-control"
-                      required
-                    />
-                    <!-- Showing errors using getter method -->
-                    <p
-                      *ngIf="
-                        productsForms.controls[i].controls.productName
-                          .touched &&
-                        productsForms.controls[i].controls.productName.invalid
-                      "
-                      class="error"
-                    >
-                      <sup>*</sup>Please enter atleast product product name
-                    </p>
-                    <p
-                      *ngIf="
-                        productsForms.controls[i].controls.productName.errors
-                          ?.minlength
-                      "
-                      class="error"
-                    >
-                      <sup>*</sup>Name shouldn't be less than 2 words
-                    </p>
-                  </div>
-
-                  <div class="col-md-12 mb-3">
-                    <label>Category</label>
-                    <input
-                      type="text"
-                      formControlName="category"
-                      class="form-control"
-                      required
-                    />
-                    <!-- Showing errors using getter method -->
-                    <p
-                      *ngIf="
-                        productsForms.controls[i].controls.category.touched &&
-                        productsForms.controls[i].controls.category.invalid
-                      "
-                      class="error"
-                    >
-                      <sup>*</sup>Please enter atleast product category
-                    </p>
-                    <p
-                      *ngIf="
-                        productsForms.controls[i].controls.category.errors
-                          ?.minlength
-                      "
-                      class="error"
-                    >
-                      <sup>*</sup>Name shouldn't be less than 2 words
-                    </p>
-                  </div>
-
-                  <div class="col-md-12 mb-3">
-                    <label>Quantity</label>
-                    <input
-                      type="text"
-                      formControlName="quantity"
-                      class="form-control"
-                      required
-                    />
-                    <!-- Showing errors using getter method -->
-                    <p
-                      *ngIf="
-                        productsForms.controls[i].controls.quantity.touched &&
-                        productsForms.controls[i].controls.quantity.invalid
-                      "
-                      class="error"
-                    >
-                      <sup>*</sup>Please provide contact number
-                    </p>
-                    <p
-                      *ngIf="
-                        productsForms.controls[i].controls.quantity.errors
-                          ?.pattern
-                      "
-                      class="error"
-                    >
-                      <sup>*</sup>Use numbers only number
-                    </p>
-                  </div>
-
-                  <div class="col-md-12 mb-3">
-                    <label>Balance</label>
-                    <input
-                      type="text"
-                      formControlName="balance"
-                      class="form-control"
-                      required
-                    />
-                    <!-- Showing errors using getter method -->
-                    <p
-                      *ngIf="
-                        productsForms.controls[i].controls.balance.touched &&
-                        productsForms.controls[i].controls.balance.invalid
-                      "
-                      class="error"
-                    >
-                      <sup>*</sup>Please provide contact number
-                    </p>
-                    <p
-                      *ngIf="
-                        productsForms.controls[i].controls.balance.errors
-                          ?.pattern
-                      "
-                      class="error"
-                    >
-                      <sup>*</sup>Use numbers only number
-                    </p>
-                  </div>
-
-                  <div class="col-md-12 mb-3">
-                    <label>Selling Price</label>
-                    <input
-                      type="text"
-                      formControlName="sellingPrice"
-                      class="form-control"
-                      required
-                    />
-                    <!-- Showing errors using getter method -->
-                    <p
-                      *ngIf="
-                        productsForms.controls[i].controls.sellingPrice
-                          .touched &&
-                        productsForms.controls[i].controls.sellingPrice.invalid
-                      "
-                      class="error"
-                    >
-                      <sup>*</sup>Please provide contact number
-                    </p>
-                    <p
-                      *ngIf="
-                        productsForms.controls[i].controls.sellingPrice.errors
-                          ?.pattern
-                      "
-                      class="error"
-                    >
-                      <sup>*</sup>Use numbers only number
-                    </p>
-                  </div>
-
-                  <div class="col-md-12 mb-3">
-                    <label>Buying price</label>
-                    <input
-                      type="text"
-                      formControlName="buyingPrice"
-                      class="form-control"
-                      required
-                    />
-                    <!-- Showing errors using getter method -->
-                    <p
-                      *ngIf="
-                        productsForms.controls[i].controls.buyingPrice
-                          .touched &&
-                        productsForms.controls[i].controls.buyingPrice.invalid
-                      "
-                      class="error"
-                    >
-                      <sup>*</sup>Please provide contact number
-                    </p>
-                    <p
-                      *ngIf="
-                        productsForms.controls[i].controls.buyingPrice.errors
-                          ?.pattern
-                      "
-                      class="error"
-                    >
-                      <sup>*</sup>Use numbers only number
-                    </p>
-                  </div>
-
-                  <button
-                    type="button"
-                    class="btn btn-danger gap-right"
-                    (click)="deleteProduct(i)"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <div class="form-group text-right">
-              <button
-                type="submit"
-                class="btn btn-success btn-block"
-                [disabled]="!editForm.valid"
-              >
-                Update Seller
-              </button>
-            </div>
-          </div>
-        </div>
-      </form>
-      <!-- Seller's Edit Form ends-->
+    <div>
+      <label>Mobile number</label>
+      <input
+        type="text"
+        formControlName="mobileNumber"
+        class="form-control"
+        required
+      />
+      <p *ngIf="mobileNumber.touched && mobileNumber.invalid" class="error">
+        <sup>*</sup>Please provide number
+      </p>
+      <p *ngIf="mobileNumber.errors?.pattern" class="error">
+        <sup>*</sup>Use numbers only number
+      </p>
     </div>
   </div>
-</div>
+
+  <div>
+    <div formArrayName="products">
+      <table
+        class="table table-bordered table-responsive-sm table-responsive-md table-responsive-lg"
+      >
+        <thead>
+          <tr>
+            <th scope="col"><label>Product Name</label></th>
+            <th scope="col"><label>Category</label></th>
+            <th scope="col"><label>Quantity</label></th>
+            <th scope="col"><label>Balance</label></th>
+            <th scope="col"><label>Selling Price</label></th>
+            <th scope="col"><label>Buying price</label></th>
+            <th scope="col"><label>Action</label></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="let product of productsForms.controls; let i = index"
+            [formGroupName]="i"
+          >
+            <td>
+              <input
+                type="text"
+                formControlName="productName"
+                class="form-control"
+                required
+              />
+              <!-- Showing errors using getter method -->
+              <p
+                *ngIf="
+                  productsForms.controls[i].controls.productName.touched &&
+                  productsForms.controls[i].controls.productName.invalid
+                "
+                class="error"
+              >
+                <sup>*</sup>Please enter atleast product product name
+              </p>
+              <p
+                *ngIf="
+                  productsForms.controls[i].controls.productName.errors
+                    ?.minlength
+                "
+                class="error"
+              >
+                <sup>*</sup>Name shouldn't be less than 2 words
+              </p>
+            </td>
+
+            <td>
+              <input
+                type="text"
+                formControlName="category"
+                class="form-control"
+                required
+              />
+              <!-- Showing errors using getter method -->
+              <p
+                *ngIf="
+                  productsForms.controls[i].controls.category.touched &&
+                  productsForms.controls[i].controls.category.invalid
+                "
+                class="error"
+              >
+                <sup>*</sup>Please enter atleast product category
+              </p>
+              <p
+                *ngIf="
+                  productsForms.controls[i].controls.category.errors?.minlength
+                "
+                class="error"
+              >
+                <sup>*</sup>Name shouldn't be less than 2 words
+              </p>
+            </td>
+
+            <td>
+              <input
+                type="text"
+                formControlName="quantity"
+                class="form-control"
+                required
+              />
+              <!-- Showing errors using getter method -->
+              <p
+                *ngIf="
+                  productsForms.controls[i].controls.quantity.touched &&
+                  productsForms.controls[i].controls.quantity.invalid
+                "
+                class="error"
+              >
+                <sup>*</sup>Please provide number
+              </p>
+              <p
+                *ngIf="
+                  productsForms.controls[i].controls.quantity.errors?.pattern
+                "
+                class="error"
+              >
+                <sup>*</sup>Use numbers only number
+              </p>
+            </td>
+
+            <td>
+              <input
+                type="text"
+                formControlName="balance"
+                class="form-control"
+                disabled
+                required
+              />
+              <!-- Showing errors using getter method -->
+              <p
+                *ngIf="
+                  productsForms.controls[i].controls.balance.touched &&
+                  productsForms.controls[i].controls.balance.invalid
+                "
+                class="error"
+              >
+                <sup>*</sup>Please provide number
+              </p>
+              <p
+                *ngIf="
+                  productsForms.controls[i].controls.balance.errors?.pattern
+                "
+                class="error"
+              >
+                <sup>*</sup>Use numbers only number
+              </p>
+            </td>
+
+            <td>
+              <input
+                type="text"
+                formControlName="sellingPrice"
+                class="form-control"
+                required
+              />
+              <!-- Showing errors using getter method -->
+              <p
+                *ngIf="
+                  productsForms.controls[i].controls.sellingPrice.touched &&
+                  productsForms.controls[i].controls.sellingPrice.invalid
+                "
+                class="error"
+              >
+                <sup>*</sup>Please provide number
+              </p>
+              <p
+                *ngIf="
+                  productsForms.controls[i].controls.sellingPrice.errors
+                    ?.pattern
+                "
+                class="error"
+              >
+                <sup>*</sup>Use numbers only number
+              </p>
+            </td>
+            <td>
+              <input
+                type="text"
+                formControlName="buyingPrice"
+                class="form-control"
+                required
+              />
+              <!-- Showing errors using getter method -->
+              <p
+                *ngIf="
+                  productsForms.controls[i].controls.buyingPrice.touched &&
+                  productsForms.controls[i].controls.buyingPrice.invalid
+                "
+                class="error"
+              >
+                <sup>*</sup>Please provide number
+              </p>
+              <p
+                *ngIf="
+                  productsForms.controls[i].controls.buyingPrice.errors?.pattern
+                "
+                class="error"
+              >
+                <sup>*</sup>Use numbers only number
+              </p>
+            </td>
+
+            <td>
+              <button
+                type="button"
+                class="btn btn-danger gap-right"
+                (click)="deleteProduct(i)"
+              >
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div class="form-group text-right">
+      <button
+        type="button"
+        class="btn btn-secondary gap-right"
+        (click)="addProduct()"
+      >
+        <i class="fas fa-plus"></i>
+        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+      </button>
+      <button type="submit" class="btn btn-success">
+        Update
+      </button>
+    </div>
+  </div>
+</form>
+<!-- Seller's Edit Form ends-->

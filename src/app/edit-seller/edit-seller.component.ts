@@ -13,6 +13,7 @@ import { ToastrService } from "ngx-toastr";
 })
 export class EditSellerComponent implements OnInit {
   editForm: FormGroup; // Define FormGroup to seller's edit form
+  preLoader: boolean;
 
   constructor(
     private crudApi: CrudService, // Inject CRUD API in constructor
@@ -25,6 +26,7 @@ export class EditSellerComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
+    this.preLoader = true;
     this.updateSellerData(); // Call updateSellerData() as soon as the component is ready
     const id = this.actRoute.snapshot.paramMap.get("id"); // Getting current component's id or information using ActivatedRoute service
     const sellerObj = await this.crudApi.getItemById("seller", id);
@@ -45,6 +47,7 @@ export class EditSellerComponent implements OnInit {
       const seller = sellerObj.data();
       delete seller.createdOn;
       this.editForm.setValue({ ...seller, products });
+      this.preLoader = false;
     });
     //          // Using SetValue() method, It's a ReactiveForm's API to store intial value of reactive form
   }
@@ -70,6 +73,7 @@ export class EditSellerComponent implements OnInit {
       balance: ["", [Validators.required, Validators.pattern("^[0-9]+$")]],
       sellingPrice: ["", [Validators.required, Validators.pattern("^[0-9]+$")]],
       buyingPrice: ["", [Validators.required, Validators.pattern("^[0-9]+$")]],
+      $key: []
     });
 
     this.productsForms.push(products);
